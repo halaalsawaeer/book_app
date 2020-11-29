@@ -7,7 +7,7 @@ Start time: 2:33
 
 Finish time: 5:58
 
-Actual time needed to complete: i didn't finish it
+Actual time needed to complete: about 6:30 hours
 
 # Project Name
 

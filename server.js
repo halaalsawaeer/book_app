@@ -1,57 +1,61 @@
 'use strict';
-
 require('dotenv').config();
 const express = require('express');
-const { request } = require('http');
-const { search } = require('superagent');
 
+const PORT = process.env.PORT || 3030;
+const app = express();
 const superagent = require('superagent');
 
-const server = express();
-const PORT = process.env.PORT || 3000;
+app.use(express.static('./public'));
 
-server.use(express.static('./public'));
-server.set('view engine', 'ejs');
 
-server.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
-server.get('/hello', (req, res) => {
+app.set('view engine', 'ejs');
+
+app.get('/', (req, res) => {
     res.render('pages/index');
+})
+app.get('/search', (req, res) => {
+    res.render('pages/searches/new.ejs')
+})
 
-})
-server.get('/searches/new', (req, res) => {
-    res.render('pages/searches/new');
-})
-server.post('/searches', (req, res) => {
+app.post('/searches', (req, res) => {
     var url;
-    let bookN = req.body.search;
-    console.log(search);
-
-    if (req.body.book === 'title') {
-         url = `https://www.googleapis.com/books/v1/volumes?q=${bookN}&intitle=${bookN}`;
-    } else if (req.body.book === 'auther') {
-         url = `https://www.googleapis.com/books/v1/volumes?q=${bookN}&inauthor=${bookN}`
+    let bookSearch = req.body.bookname;
+    
+    if (req.body.myBook === 'title') {
+        url = `https://www.googleapis.com/books/v1/volumes?q=${bookSearch}&intitle:${bookSearch}`;
     }
-    superagent(url)
-    .then(data =>{
-        console.log(data.body.items);
-        let arr = data.body.items;
-        let bookData = arr.map(value =>{
-            let bookObj=new Book(value);
-            return bookObj ;
-        })
-        res.render('pages/searches/show',{books :bookData}
-        )
-    })
-})
+    else if (req.body.myBook === 'author') {
+        url = `https://www.googleapis.com/books/v1/volumes?q=${bookSearch}&inauthor:${bookSearch}`;
+    }
 
-function Book(value) {
-    this.bookName =value.volumeInfo.title;
-    this.bookAuthor = value.volumeInfo.authors;
-    this.bookDesc = value.volumeInfo.description;
-    this.bookImg = value.volumeInfo.imageLinks ? data.volumeInfo.imageLinks.thumbnail : `https://i.imgur.com/J5LVHEL.jpg`;
+    superagent.get(url)
+        .then(data => {
+            let arr = data.body.items;
+            let books = arr.map(book => {
+                let bookObj = new Book(book);
+                
+                return bookObj;
+            });
+            res.render('pages/searches/show', { books: books })
+        })
+        .catch(error => {
+            res.render(error,'pages/error');
+        });
+});
+function Book(book) {
+    this.title = book.volumeInfo.title;
+    this.image = book.volumeInfo.imageLinks.smallThumbnail || `https://i.imgur.com/J5LVHEL.jpg`;
+    this.authors = book.volumeInfo.authors || 'Not avilabile';
+    this.description = book.volumeInfo.description || 'Not avilabile';
 
 }
-server.listen(PORT, () => {
-    console.log(`app is listening on port ${PORT}`);
+app.get('*', (req, res) => {
+    res.status(404).send('You have a error in writing the route');
+})
+
+app.listen(PORT, () => {
+    console.log(`Listening on PORT ${PORT}`)
 })
