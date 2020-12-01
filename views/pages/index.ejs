@@ -6,6 +6,28 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello Hello !</h1>
+    <ul>
+        <li><a href="/">My Favorite Books</a></li>
+        <li><a href="/search">GOOGLE BOOKS</a></li>
+    </ul>
+
+    <main>
+    <h1>BOOK LIST</h1>
+    <section>
+        
+            <%books.forEach(val =>{%>
+               
+                    <img src="<%=val.image_url%>" alt="">
+                    <h4><%=val.title%></h4>
+                    <h5><%=val.author%></h5>
+                    <h6><%=val.isbn%></h6>
+                    <a href="/books/<%=val.id%>">View Details</a>
+                    <p><%=val.description%></p>
+                    <p><%=books.lenght%></p>
+            <%})%>
+     
+       
+    </section>
+</main>
 </body>
 </html>

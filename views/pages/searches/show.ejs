@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,16 +7,32 @@
     <title>Document</title>
 </head>
 <body>
+    <ul>
+        <li><a href="/">My Favorite Books</a></li>
+        <li><a href="/search">GOOGLE BOOKS</a></li>
+    </ul>
+
    <main>
        <h1>Search Results</h1>
-       <%books.forEach(val=>{%>
+       
+       <%bookData.forEach(val=>{%>
        
         <img src="<%=val.image%>">
         
         <h2><%=val.title%></h2>
         <h5><%=val.authors%></h5>
         <p><%=val.description%></p>
-        <%})%>
+       
+               <form action="/books" method="POST">
+            <input type="hidden" name="title"   value="<%=val.title%>" >
+            <input type="hidden" name="author"   value="<%=val.authors%>">
+            <input type="hidden" name="isbn" value="<%=val.isbn%>">
+            <input type="hidden" name="image_url"  value="<%=val.image%>">
+            <input type="hidden" name="description" value="<%=val.description%>">
+            <button >Select the book</button>
+            <%})%>
+        </form>
+    </div>
    </main> 
 </body>
 </html>
