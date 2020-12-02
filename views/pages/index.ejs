@@ -4,30 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
+    <link href="styles/layout.css" rel="stylesheet" type="text/css">
+    <link href="styles/base.css" rel="stylesheet" type="text/css">
+    <link href="styles/module.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <ul>
-        <li><a href="/">My Favorite Books</a></li>
-        <li><a href="/search">GOOGLE BOOKS</a></li>
-    </ul>
+    <%- include('../layout/header')%>
 
     <main>
-    <h1>BOOK LIST</h1>
-    <section>
-        
+   
+
+    <p class="bookCount" style="text-align: center;">You have: <span> <%= books.length %> </span>  Saved Book</p>
+    <section >
+        <ul id="mainBook">
             <%books.forEach(val =>{%>
-               
-                    <img src="<%=val.image_url%>" alt="">
-                    <h4><%=val.title%></h4>
-                    <h5><%=val.author%></h5>
+               <li id="bookM">
+                   <h4 class="bookTit"><%=val.title%></h4>
+                    <img  class="bookImg"src="<%=val.image_url%>" alt="">
+                    <div>
+                    <h5 class ="bookAuthor"><%=val.author%></h5>
                     <h6><%=val.isbn%></h6>
-                    <a href="/books/<%=val.id%>">View Details</a>
-                    <p><%=val.description%></p>
+                    <p class="descrip"><%=val.description%></p>
+                </div>
+                    <a id="view" href="/books/<%=val.id%>">View Details</a>
                     <p><%=books.lenght%></p>
+                </li>
             <%})%>
-     
+        </ul>
        
     </section>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="/app.js"></script>
 </main>
 </body>
 </html>

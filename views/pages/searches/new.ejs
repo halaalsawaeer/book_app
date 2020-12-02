@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,19 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="styles/layout.css" rel="stylesheet" type="text/css">
+    <link href="styles/base.css" rel="stylesheet" type="text/css">
+    <link href="styles/module.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-    <ul>
-        <li><a href="/">My Favorite Books</a></li>
-        <li><a href="/search">GOOGLE BOOKS</a></li>
-    </ul>
+
+    <%- include('../../layout/header')%>
 
     <main>
         <h3>Search by Title or Author</h3>
 
         <section>
-            <form action="/searches" method="POST">
+            <form  id="search" action="/searches" method="POST">
                 <input type="text" name="bookname" placeholder="Please enter a Title or author">
                 <br>
               
